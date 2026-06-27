@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { motion } from "framer-motion"
 import { Eye, EyeOff, Mail, Lock, Coffee, ArrowLeft } from "lucide-react"
@@ -10,6 +11,7 @@ import logoImage from "@/assets/logo/daily-grind-logo1.png"
 import heroBg from "@/assets/images/daily-grind-bg.png"
 
 export default function LoginPage() {
+    const router = useRouter()
     const [showPassword, setShowPassword] = useState(false)
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -18,6 +20,8 @@ export default function LoginPage() {
         e.preventDefault()
         // TODO: connect to backend auth
         console.log({ email, password })
+        // Temporary: Navigate straight to the dashboard to simulate successful login
+        router.push("/dashboard")
     }
 
     return (

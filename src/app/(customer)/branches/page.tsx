@@ -1,8 +1,9 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import Image from "next/image"
-import { MapPin, Clock, Phone, Car, Wifi, Coffee, MapPinned, ArrowRight } from "lucide-react"
+import { MapPin, Clock, Phone, Car, Wifi, Coffee, MapPinned, ArrowRight, Star, ChevronDown } from "lucide-react"
 import { MainWrapper } from "@/components/layout/main-wrapper"
 import { Button } from "@/components/ui/button"
 
@@ -12,184 +13,263 @@ import storeImg3 from "@/assets/images/daily-grind-bg.png"
 
 const branches = [
     {
-        name: "Angeles City (Flagship)",
-        address: "MacArthur Highway, Balibago, Angeles City",
-        hours: "7:00 AM - 11:00 PM (Daily)",
+        id: 1,
+        name: "Angeles City",
+        subtitle: "Flagship Store",
+        address: "MacArthur Highway, Balibago, Angeles City, Pampanga",
+        hours: "7:00 AM – 11:00 PM",
+        daysOpen: "Daily",
         phone: "+63 917 123 4567",
+        rating: "4.9",
+        reviews: "1.2k",
         amenities: [
             { icon: Wifi, label: "Fast Wi-Fi" },
             { icon: Car, label: "Parking" },
             { icon: Coffee, label: "Reserve Bar" },
         ],
-        type: "Flagship Store",
-        image: storeImg1
+        tag: "Flagship",
+        tagColor: "bg-primary/10 text-primary border-primary/20",
+        image: storeImg1,
+        mapsUrl: "https://maps.google.com",
     },
     {
-        name: "Clark Freeport Zone",
-        address: "Parade Grounds, Clark Freeport Zone",
-        hours: "6:00 AM - 12:00 MN (Daily)",
+        id: 2,
+        name: "Clark Freeport",
+        subtitle: "Premium Café",
+        address: "Parade Grounds, Clark Freeport Zone, Pampanga",
+        hours: "6:00 AM – 12:00 MN",
+        daysOpen: "Daily",
         phone: "+63 917 987 6543",
+        rating: "4.8",
+        reviews: "876",
         amenities: [
             { icon: Wifi, label: "Fast Wi-Fi" },
             { icon: Car, label: "Ample Parking" },
             { icon: Coffee, label: "Outdoor Seating" },
         ],
-        type: "Premium Cafe",
-        image: storeImg2
+        tag: "Premium",
+        tagColor: "bg-purple-500/10 text-purple-500 border-purple-500/20",
+        image: storeImg2,
+        mapsUrl: "https://maps.google.com",
     },
     {
-        name: "San Fernando (Drive-Thru)",
-        address: "Jose Abad Santos Ave, San Fernando",
+        id: 3,
+        name: "San Fernando",
+        subtitle: "Drive-Thru Branch",
+        address: "Jose Abad Santos Ave, San Fernando, Pampanga",
         hours: "Open 24 Hours",
+        daysOpen: "24/7",
         phone: "+63 917 456 7890",
+        rating: "4.7",
+        reviews: "543",
         amenities: [
             { icon: MapPinned, label: "Drive-Thru" },
             { icon: Wifi, label: "Wi-Fi" },
             { icon: Car, label: "Parking" },
         ],
-        type: "Drive-Thru",
-        image: storeImg3
-    }
+        tag: "24/7",
+        tagColor: "bg-green-500/10 text-green-500 border-green-500/20",
+        image: storeImg3,
+        mapsUrl: "https://maps.google.com",
+    },
+]
+
+const stats = [
+    { value: "3", label: "Branches" },
+    { value: "12k+", label: "Happy Customers" },
+    { value: "4.8★", label: "Avg. Rating" },
+    { value: "Since 2019", label: "Serving Pampanga" },
 ]
 
 export default function BranchesPage() {
+    const [activeId, setActiveId] = useState<number | null>(null)
+
     return (
         <MainWrapper className="min-h-screen bg-[#FDFBF7] dark:bg-background pb-24 overflow-hidden">
-            {/* 1. Cinematic Header with Curved Bottom */}
-            <div className="relative w-full bg-foreground dark:bg-muted/10 py-24 md:py-32 rounded-b-[3rem] md:rounded-b-[4rem] border-b border-border/10 mb-16 overflow-hidden">
-                <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0 bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%,transparent_100%)] bg-[length:20px_20px]" />
-                </div>
-                
-                <motion.div 
+
+            {/* ── 1. Cinematic Header ── */}
+            <div className="relative w-full bg-foreground dark:bg-muted/10 pt-28 pb-36 overflow-hidden">
+                <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.04)_1px,transparent_1px)] bg-[size:28px_28px]" />
+                <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#FDFBF7] dark:from-background to-transparent" />
+
+                <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8 }}
                     className="relative z-10 text-center px-4 max-w-4xl mx-auto"
                 >
-                    <div className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-primary/20 text-primary font-bold text-xs uppercase tracking-widest mb-6 border border-primary/30 backdrop-blur-md">
+                    <div className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-primary/20 text-primary font-bold text-xs uppercase tracking-widest mb-6 border border-primary/30">
                         <MapPin className="w-4 h-4" />
                         Pampanga Exclusives
                     </div>
-                    <h1 className="font-display text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+                    <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-[0.9]">
                         Find Your <br />
                         <span className="text-primary italic">Daily Grind.</span>
                     </h1>
-                    <p className="text-white/70 text-lg font-medium max-w-2xl mx-auto leading-relaxed">
-                        Proudly brewing in the Culinary Capital of the Philippines. Visit our meticulously designed stores across Pampanga for your daily dose of perfection.
+                    <p className="text-white/60 text-lg font-medium max-w-2xl mx-auto leading-relaxed">
+                        Proudly brewing in the Culinary Capital of the Philippines. Visit our meticulously designed stores across Pampanga.
                     </p>
+
+                    {/* Scroll cue */}
+                    <motion.div
+                        animate={{ y: [0, 8, 0] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                        className="mt-12 flex justify-center text-white/30"
+                    >
+                        <ChevronDown className="w-6 h-6" />
+                    </motion.div>
                 </motion.div>
             </div>
 
+            {/* ── 2. Stats Strip ── */}
+            <div className="max-w-5xl mx-auto px-4 -mt-8 relative z-20 mb-20">
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                    className="grid grid-cols-2 md:grid-cols-4 gap-px bg-border rounded-3xl overflow-hidden shadow-xl border border-border"
+                >
+                    {stats.map((stat, i) => (
+                        <div key={i} className="bg-card px-6 py-6 text-center">
+                            <div className="font-display text-2xl font-bold text-primary mb-1">{stat.value}</div>
+                            <div className="text-xs text-muted-foreground uppercase tracking-widest font-semibold">{stat.label}</div>
+                        </div>
+                    ))}
+                </motion.div>
+            </div>
+
+            {/* ── 3. Branch Location Cards ── */}
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                {/* 2. Ultra-Premium Branches List */}
-                <div className="space-y-12 lg:space-y-24 mb-24">
-                    {branches.map((branch, index) => {
-                        const isEven = index % 2 === 0
-                        return (
-                            <motion.div 
-                                key={branch.name}
-                                initial={{ opacity: 0, y: 40 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
-                                transition={{ duration: 0.8 }}
-                                className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 lg:gap-16 items-center group`}
+                <div className="space-y-8 mb-24">
+                    {branches.map((branch, index) => (
+                        <motion.div
+                            key={branch.id}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true, margin: "-60px" }}
+                            transition={{ duration: 0.6, delay: index * 0.1 }}
+                        >
+                            <div
+                                className={`group relative bg-card border rounded-[2rem] overflow-hidden transition-all duration-500 cursor-pointer ${
+                                    activeId === branch.id
+                                        ? "border-primary/50 shadow-2xl shadow-primary/10"
+                                        : "border-border/40 hover:border-primary/30 hover:shadow-xl"
+                                }`}
+                                onClick={() => setActiveId(activeId === branch.id ? null : branch.id)}
                             >
-                                {/* Store Image with Parallax & Float Effects */}
-                                <div className="w-full lg:w-1/2 relative">
-                                    <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden shadow-2xl border border-border/20 z-10">
-                                        <Image 
+                                <div className="flex flex-col lg:flex-row">
+                                    {/* Image */}
+                                    <div className="relative w-full lg:w-2/5 min-h-[260px] lg:min-h-[320px] overflow-hidden shrink-0">
+                                        <Image
                                             src={branch.image}
                                             alt={branch.name}
                                             fill
-                                            className="object-cover object-center group-hover:scale-110 transition-transform duration-1000 ease-out"
+                                            className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
                                         />
-                                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                        
-                                        <div className="absolute bottom-6 left-6 flex gap-2 translate-y-8 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 z-20">
+                                        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/60 hidden lg:block" />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-card/60 to-transparent lg:hidden" />
+
+                                        {/* Tag */}
+                                        <span className={`absolute top-5 left-5 text-xs font-bold uppercase tracking-wider px-3 py-1.5 rounded-full border backdrop-blur-md ${branch.tagColor}`}>
+                                            {branch.tag}
+                                        </span>
+
+                                        {/* Rating bubble */}
+                                        <div className="absolute bottom-5 left-5 flex items-center gap-1.5 bg-background/90 backdrop-blur-md px-3 py-1.5 rounded-full shadow-lg border border-border">
+                                            <Star className="w-3.5 h-3.5 text-yellow-400 fill-yellow-400" />
+                                            <span className="text-xs font-bold text-foreground">{branch.rating}</span>
+                                            <span className="text-xs text-muted-foreground">({branch.reviews} reviews)</span>
+                                        </div>
+                                    </div>
+
+                                    {/* Info */}
+                                    <div className="flex-1 p-8 lg:p-10 flex flex-col justify-center">
+                                        <div className="text-xs font-bold text-primary uppercase tracking-widest mb-2">{branch.subtitle}</div>
+                                        <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6 group-hover:text-primary transition-colors">
+                                            {branch.name}
+                                        </h2>
+
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                                            <div className="flex items-start gap-3">
+                                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                                    <MapPin className="w-4 h-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5">Address</p>
+                                                    <p className="text-sm text-foreground leading-snug">{branch.address}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-start gap-3">
+                                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                                    <Clock className="w-4 h-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5">Hours</p>
+                                                    <p className="text-sm text-foreground">{branch.hours}</p>
+                                                    <p className="text-xs text-muted-foreground">{branch.daysOpen}</p>
+                                                </div>
+                                            </div>
+                                            <div className="flex items-start gap-3">
+                                                <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                                                    <Phone className="w-4 h-4" />
+                                                </div>
+                                                <div>
+                                                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-0.5">Contact</p>
+                                                    <p className="text-sm text-foreground">{branch.phone}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Amenity Tags */}
+                                        <div className="flex flex-wrap gap-2 mb-8">
                                             {branch.amenities.map((amenity, i) => {
                                                 const Icon = amenity.icon
                                                 return (
-                                                    <div key={i} className="bg-background/90 backdrop-blur-md px-3 py-1.5 rounded-full text-xs font-bold text-foreground flex items-center gap-1.5 shadow-lg">
+                                                    <span key={i} className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground bg-muted px-3 py-1.5 rounded-full border border-border">
                                                         <Icon className="w-3.5 h-3.5 text-primary" />
                                                         {amenity.label}
-                                                    </div>
+                                                    </span>
                                                 )
                                             })}
                                         </div>
-                                    </div>
-                                    {/* Decorative glowing blob behind image */}
-                                    <div className={`absolute -inset-4 rounded-full blur-3xl opacity-20 -z-10 bg-primary group-hover:opacity-40 transition-opacity duration-700 ${isEven ? '-bottom-10 -right-10' : '-bottom-10 -left-10'}`} />
-                                </div>
 
-                                {/* Store Details */}
-                                <div className="w-full lg:w-1/2 flex flex-col justify-center">
-                                    <div className="inline-flex items-center gap-2 text-primary font-bold text-xs uppercase tracking-widest mb-4">
-                                        {branch.type}
-                                    </div>
-                                    <h2 className="font-display text-4xl md:text-5xl font-bold text-foreground mb-6 leading-tight group-hover:text-primary transition-colors">
-                                        {branch.name}
-                                    </h2>
-                                    
-                                    <div className="space-y-6 mb-10 border-l-2 border-primary/20 pl-6 py-2">
-                                        <div className="flex items-start gap-4 text-muted-foreground">
-                                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
-                                                <MapPin className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold text-foreground mb-1">Location</p>
-                                                <span className="text-sm leading-relaxed block">{branch.address}</span>
-                                            </div>
+                                        <div className="flex flex-col sm:flex-row gap-3">
+                                            <a href={branch.mapsUrl} target="_blank" rel="noopener noreferrer">
+                                                <Button size="lg" className="rounded-full px-8 h-12 shadow-lg shadow-primary/20 w-full sm:w-auto">
+                                                    Get Directions <ArrowRight className="w-4 h-4 ml-2" />
+                                                </Button>
+                                            </a>
+                                            <a href={`tel:${branch.phone}`}>
+                                                <Button size="lg" variant="outline" className="rounded-full px-8 h-12 border-border/50 hover:bg-muted w-full sm:w-auto">
+                                                    <Phone className="w-4 h-4 mr-2" /> Call Store
+                                                </Button>
+                                            </a>
                                         </div>
-                                        <div className="flex items-start gap-4 text-muted-foreground">
-                                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
-                                                <Clock className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold text-foreground mb-1">Hours</p>
-                                                <span className="text-sm leading-relaxed block">{branch.hours}</span>
-                                            </div>
-                                        </div>
-                                        <div className="flex items-start gap-4 text-muted-foreground">
-                                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
-                                                <Phone className="w-5 h-5" />
-                                            </div>
-                                            <div>
-                                                <p className="font-semibold text-foreground mb-1">Contact</p>
-                                                <span className="text-sm leading-relaxed block">{branch.phone}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex flex-col sm:flex-row gap-4">
-                                        <Button size="lg" className="rounded-full px-8 h-12 shadow-lg shadow-primary/20 hover:scale-105 transition-transform">
-                                            Get Directions <ArrowRight className="w-4 h-4 ml-2" />
-                                        </Button>
-                                        <Button size="lg" variant="outline" className="rounded-full px-8 h-12 border-border/50 hover:bg-muted">
-                                            Call Store
-                                        </Button>
                                     </div>
                                 </div>
-                            </motion.div>
-                        )
-                    })}
+                            </div>
+                        </motion.div>
+                    ))}
                 </div>
 
-                {/* 3. Call to Action (Expansion) */}
-                <motion.div 
+                {/* ── 4. CTA ── */}
+                <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     viewport={{ once: true }}
-                    className="mt-32 p-10 md:p-16 rounded-[3rem] bg-card dark:bg-card/40 border border-border/50 text-center relative overflow-hidden shadow-2xl"
+                    className="p-10 md:p-16 rounded-[3rem] bg-card dark:bg-card/40 border border-border/50 text-center relative overflow-hidden shadow-2xl"
                 >
                     <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 rounded-full blur-[100px] -z-10" />
                     <div className="absolute bottom-0 left-0 w-96 h-96 bg-accent/10 rounded-full blur-[100px] -z-10" />
-                    
+
+                    <div className="inline-flex items-center gap-2 py-1.5 px-4 rounded-full bg-primary/10 text-primary font-bold text-xs uppercase tracking-widest mb-6 border border-primary/20">
+                        <MapPin className="w-4 h-4" /> Coming Soon
+                    </div>
                     <h2 className="relative z-10 font-display text-4xl md:text-5xl font-bold text-foreground mb-6">Want us in your city?</h2>
                     <p className="relative z-10 text-muted-foreground text-lg max-w-2xl mx-auto mb-10">
                         We are currently exclusive to Pampanga, but we're actively scouting new locations. Let us know where you want the next Daily Grind to open!
                     </p>
-                    <Button size="lg" className="relative z-10 rounded-full bg-primary hover:bg-primary/90 text-primary-foreground h-14 px-10 text-lg shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
+                    <Button size="lg" className="relative z-10 rounded-full h-14 px-10 text-base shadow-xl shadow-primary/20 hover:scale-105 transition-transform">
                         Suggest a Location
                     </Button>
                 </motion.div>

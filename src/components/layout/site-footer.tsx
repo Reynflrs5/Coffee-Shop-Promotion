@@ -3,7 +3,7 @@ import Image from "next/image"
 import { Send, MapPin, Mail, Phone } from "lucide-react"
 
 import { navLinks } from "@/constants/nav-links"
-import logoImage from "@/assets/logo/daily-grind-logo1.png"
+import { Logo } from "@/components/logo"
 
 export function SiteFooter() {
     return (
@@ -17,14 +17,8 @@ export function SiteFooter() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
                     {/* Brand Section */}
                     <div className="lg:col-span-1">
-                        <Link href="/" className="flex flex-col gap-4 mb-6 group inline-block">
-                            <Image
-                                src={logoImage}
-                                alt="Daily Grind Coffee Shop Logo"
-                                width={180}
-                                height={180}
-                                className="h-40 w-40 object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-500"
-                            />
+                        <Link href="/" className="flex items-center gap-4 mb-6 group w-fit">
+                            <Logo className="h-14 w-14 md:h-16 md:w-16 drop-shadow-xl" />
                             <span className="font-display text-3xl font-bold text-foreground tracking-wide">
                                 Daily Grind
                             </span>

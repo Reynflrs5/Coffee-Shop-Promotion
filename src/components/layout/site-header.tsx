@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/sheet"
 import { navLinks } from "@/constants/nav-links"
 import { cn } from "@/lib/utils"
-import logoImage from "@/assets/logo/daily-grind-logo1.png"
+import { Logo } from "@/components/logo"
 import { ThemeToggle } from "@/components/theme-toggle"
 
 export function SiteHeader() {
@@ -31,14 +31,7 @@ export function SiteHeader() {
             <div className="mx-auto flex h-24 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3 group">
-                    <Image
-                        src={logoImage}
-                        alt="Daily Grind Coffee Shop Logo"
-                        width={80}
-                        height={80}
-                        className="h-20 w-20 object-contain drop-shadow-md hover:scale-105 transition-transform"
-                        priority
-                    />
+                    <Logo className="h-16 w-16 md:h-20 md:w-20" />
                     <span className="font-display text-4xl font-bold tracking-tight text-primary hidden sm:inline">
                         Daily Grind
                     </span>
@@ -105,14 +98,8 @@ export function SiteHeader() {
                             <div className="flex flex-col h-full z-10">
                                 {/* Mobile Header */}
                                 <div className="flex items-center gap-4 p-8 pb-4 border-b border-border justify-between">
-                                    <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center p-2 shadow-inner">
-                                        <Image
-                                            src={logoImage}
-                                            alt="Daily Grind Logo"
-                                            width={48}
-                                            height={48}
-                                            className="object-contain drop-shadow-md"
-                                        />
+                                    <div className="w-12 h-12 rounded-full flex items-center justify-center shadow-inner">
+                                        <Logo className="w-10 h-10" />
                                     </div>
                                     <span className="font-display text-2xl font-bold text-foreground tracking-wide">
                                         Daily Grind
