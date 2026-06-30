@@ -1,0 +1,69 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+model Promotion {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String
+  badge       String
+  tag         String
+  validUntil  String
+  featured    Boolean  @default(false)
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model MenuItem {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  category    String
+  imageUrl    String?
+  available   Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model Branch {
+  id        Int    @id @default(autoincrement())
+  name      String
+  address   String
+  city      String
+  phone     String?
+  openHours String?
+}
+
+model User {
+  id            Int           @id @default(autoincrement())
+  email         String        @unique
+  name          String?
+  passwordHash  String
+  loyaltyPoints LoyaltyPoints?
+  orders        Order[]
+  createdAt     DateTime      @default(now())
+}
+
+model LoyaltyPoints {
+  id      Int  @id @default(autoincrement())
+  points  Int  @default(0)
+  userId  Int  @unique
+  user    User @relation(fields: [userId], references: [id])
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  items     String   // e.g., "Iced Caramel Macchiato, Butter Croissant"
+  amount    Float    // total in PHP
+  points    Int      @default(0)  // points earned
+  type      String   @default("order") // "order" or "reward"
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}

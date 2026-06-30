@@ -1,20 +1,36 @@
 "use client"
 
 import Link from "next/link"
-import Image from "next/image"
 import { motion } from "framer-motion"
-import { Bell, LogOut, User } from "lucide-react"
+import { LogOut, User } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button, buttonVariants } from "@/components/ui/button"
-import { Logo } from "@/components/logo"
 import { useRouter } from "next/navigation"
 
-export function DashboardHeader() {
-    const router = useRouter()
+function LogoMark() {
+    return (
+        <div className="w-9 h-9 rounded-[10px] bg-[#C87941] flex items-center justify-center flex-shrink-0">
+            <span className="font-serif text-[17px] font-bold italic text-[#1A0900] tracking-[-0.03em] leading-none">
+                dg
+            </span>
+        </div>
+    )
+}
 
-    const handleLogout = () => {
-        // TODO: clear auth session
-        router.push("/")
+export function DashboardHeader({ user }: { user?: { name: string | null } }) {
+    const router = useRouter()
+    
+    // Extract first name or fallback
+    const firstName = user?.name ? user.name.split(" ")[0] : "Guest"
+
+    const handleLogout = async () => {
+        try {
+            await fetch("/api/auth/logout", { method: "POST" })
+            router.push("/login")
+            router.refresh()
+        } catch {
+            router.push("/")
+        }
     }
 
     return (
@@ -27,13 +43,10 @@ export function DashboardHeader() {
                 <div className="flex h-20 items-center justify-between">
                     {/* Left side (Logo) */}
                     <div className="flex items-center gap-3">
-                        <Link href="/dashboard" className="flex items-center gap-3 group">
-                            <div className="relative">
-                                <div className="absolute inset-0 bg-primary/20 blur-xl rounded-full group-hover:bg-primary/40 transition-colors" />
-                                <Logo className="h-12 w-12 relative z-10" />
-                            </div>
-                            <span className="font-display text-2xl font-bold text-foreground">
-                                Daily Grind
+                        <Link href="/dashboard" className="flex items-center gap-2.5 group">
+                            <LogoMark />
+                            <span className="font-serif text-[20px] font-bold tracking-[-0.01em] text-foreground leading-none hidden sm:block">
+                                Daily <em className="text-[#C87941] not-italic">Grind</em>
                             </span>
                         </Link>
                     </div>
@@ -45,13 +58,15 @@ export function DashboardHeader() {
                         <div className="h-6 w-px bg-border mx-1" />
 
                         <Link 
-                            href="/profile"
-                            className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-2 rounded-full hidden sm:flex px-4" })}
+                            href="/dashboard/profile"
+                            className={buttonVariants({ variant: "ghost", size: "sm", className: "gap-2 rounded-full flex px-2 sm:px-4" })}
                         >
-                            <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center">
-                                <User className="w-4 h-4 text-primary" />
+                            <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
+                                <span className="text-xs font-bold text-primary">
+                                    {firstName.charAt(0).toUpperCase()}
+                                </span>
                             </div>
-                            <span className="font-semibold">Alex</span>
+                            <span className="font-semibold hidden sm:inline">{firstName}</span>
                         </Link>
 
                         <Button variant="outline" size="sm" onClick={handleLogout} className="rounded-full gap-2 border-primary/20 hover:bg-primary hover:text-primary-foreground transition-colors">
